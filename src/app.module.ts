@@ -8,6 +8,8 @@ import {ShipsModule} from './ships/ships.module';
 import { Ship } from './ships/ships.entity';
 import { PortsModule } from './ports/ports.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [    
@@ -25,7 +27,12 @@ import { UsersModule } from './users/users.module';
   TypeOrmModule.forFeature([Ship]),
   ShipsModule,
   PortsModule,
-  UsersModule,],
+  ConfigModule.forRoot({
+    isGlobal: true,
+    envFilePath: '.env', // This makes ConfigService available globally
+  }),
+  UsersModule,
+  AuthModule,],
   controllers: [AppController, ShipsController],
   providers: [AppService, ShipsService],
 })

@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Port } from './port.entity';
+import { CreatePortDto } from './create-port.dto';
 
 @Injectable()
 export class PortsService {
@@ -11,17 +12,17 @@ export class PortsService {
     private portsRepository: Repository<Port>,
   ) {}
 
-  findAll(): Promise<Port[]> {
-    return this.portsRepository.find({ relations: ['ships'] });
+  findAll() {
+    return this.portsRepository.find();
   }
 
   findOne(id: number): Promise<Port> {
     return this.portsRepository.findOne({ where: { id }, relations: ['ships'] });
   }
 
-  create(port: Partial<Port>): Promise<Port> {
-    const newPort = this.portsRepository.create(port);
-    return this.portsRepository.save(newPort);
+  create(createPortDto: CreatePortDto) {
+    const port = this.portsRepository.create(createPortDto);
+    return this.portsRepository.save(port);
   }
 
   async update(id: number, updateData: Partial<Port>): Promise<Port> {

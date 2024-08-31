@@ -1,7 +1,7 @@
 // src/users/users.service.ts
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOneOptions, Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './create-user-dto';
 import { Ship } from 'src/ships/ships.entity';
@@ -18,27 +18,35 @@ export class UsersService {
   findAll(): Promise<User[]> {
     return this.usersRepository.find({ relations: ['ship'] });
   }
+  
 
-  findOne(id: number): Promise<User> {
-    return this.usersRepository.findOne({ where: { id }, relations: ['ship'] });
+  // Method to find a user by ID
+  async findOne(id: number): Promise<User> {
+    return this.usersRepository.findOne({ where: { id } });
   }
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    const { shipId, ...userData } = createUserDto;
-
-    // Check if shipId is provided and fetch the ship
-    let ship: Ship | undefined;
-    if (shipId) {
-      ship = await this.shipRepository.findOneBy({ id: shipId });
+    // Method to find a user by username
+    async findByUsername(username: string): Promise<User | undefined> {
+      return this.usersRepository.findOne({ where: { username } });
     }
 
-    // Create user
-    const user = this.usersRepository.create({ ...userData, ship });
-    return this.usersRepository.save(user);
-  }
+    async createUser(createUserDto: CreateUserDto): Promise<User> {
+      const user = this.usersRepository.create(createUserDto);
+      return this.usersRepository.save(user);
+    }
 
-  async update(id: number, updateData: Partial<User>): Promise<User> {
+  
+    async create(createUserDto: CreateUserDto): Promise<User> {
+      const newUser = this.usersRepository.create(createUserDto);
+      return this.usersRepository.save(newUser);
+    }
+
+   // Update method that correctly calls findOne after the update
+   async update(id: number, updateData: Partial<User>): Promise<User> {
+    // Perform the update operation
     await this.usersRepository.update(id, updateData);
+
+    // Retrieve and return the updated user using the updated findOne method
     return this.findOne(id);
   }
 

@@ -16,4 +16,7 @@ export class User {
   @ManyToOne(() => Ship, (ship) => ship.users, { nullable: true })
   @JoinColumn({ name: 'shipId' })
   ship?: Ship;  // Optional property
+
+  @Column({ nullable: true })
+  shipId?: number; // Optional, if you want to store the ship ID in the user
 }

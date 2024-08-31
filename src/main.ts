@@ -1,8 +1,14 @@
+import * as dotenv from 'dotenv';
+dotenv.config(); // Load environment variables
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ShipsService } from './ships/ships.service';
 import { ValidationPipe } from '@nestjs/common';
 
+
+
+
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 

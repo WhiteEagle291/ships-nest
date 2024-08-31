@@ -12,6 +12,10 @@ export class ShipsService {
   ) {}
   // Service methods here
 
+  findAll() {
+    return this.shipRepository.find({ relations: ['port'] });
+  }
+
   async addShip(createShipDto: CreateShipDto): Promise<Ship> {
     console.log('Received DTO:', createShipDto);
   
@@ -32,9 +36,9 @@ export class ShipsService {
   }
   
   
-  async createShip(name: string, type: string, crew: string[]): Promise<Ship> {
-    const newShip = this.shipRepository.create({ name, type, crew });
-    return this.shipRepository.save(newShip);
+  create(createShipDto: CreateShipDto) {
+    const ship = this.shipRepository.create(createShipDto);
+    return this.shipRepository.save(ship);
   }
 
   async getAllShips(): Promise<Ship[]> {

@@ -12,5 +12,6 @@ import { Ship } from 'src/ships/ships.entity';
   ],
   providers: [UsersService],
   controllers: [UsersController],
+  exports: [UsersService,TypeOrmModule],
 })
 export class UsersModule {}

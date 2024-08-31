@@ -2,13 +2,14 @@
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { PortsService } from './ports.service';
 import { Port } from './port.entity';
+import { CreatePortDto } from './create-port.dto';
 
 @Controller('ports')
 export class PortsController {
   constructor(private readonly portsService: PortsService) {}
 
   @Get()
-  findAll(): Promise<Port[]> {
+  findAll() {
     return this.portsService.findAll();
   }
 
@@ -18,8 +19,8 @@ export class PortsController {
   }
 
   @Post()
-  create(@Body() portData: Partial<Port>): Promise<Port> {
-    return this.portsService.create(portData);
+  create(@Body() createPortDto: CreatePortDto) {
+    return this.portsService.create(createPortDto);
   }
 
   @Put(':id')

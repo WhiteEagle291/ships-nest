@@ -8,15 +8,25 @@ import { CreateShipDto } from './create-ship.dto';
 export class ShipsController {
   constructor(private shipsService: ShipsService) {}
 
-  @Post()
-  async createShip(@Body() createShipDto: CreateShipDto): Promise<Ship> {
-    console.log('Controller received:', createShipDto);
-    return this.shipsService.addShip(createShipDto);
-  }
+  // @Post()
+  // async createShip(@Body() createShipDto: CreateShipDto): Promise<Ship> {
+  //   console.log('Controller received:', createShipDto);
+  //   return this.shipsService.addShip(createShipDto);
+  // }
+
+  // @Get()
+  // async getAllShips(): Promise<Ship[]> {
+  //   return this.shipsService.getAllShips();
+  // }
 
   @Get()
-  async getAllShips(): Promise<Ship[]> {
-    return this.shipsService.getAllShips();
+  findAll() {
+    return this.shipsService.findAll();
+  }
+
+  @Post()
+  create(@Body() createShipDto: CreateShipDto) {
+    return this.shipsService.create(createShipDto);
   }
 
   @Get(':id')
@@ -37,9 +47,9 @@ export class ShipsController {
     return this.shipsService.deleteShip(id);
   }
 
-  @Post('/add-test-ship')
-  async addTestShip(): Promise<Ship> {
-    // Hardcoded ship data for testing
-    return this.shipsService.createShip('Black Pearl', 'Pirate Ship', ['Jack Sparrow', 'Will Turner', 'Elizabeth Swann']);
-  }
+  // @Post('/add-test-ship')
+  // async addTestShip(): Promise<Ship> {
+  //   // Hardcoded ship data for testing
+  //   return this.shipsService.createShip('Black Pearl', 'Pirate Ship', ['Jack Sparrow', 'Will Turner', 'Elizabeth Swann']);
+  // }
 }
