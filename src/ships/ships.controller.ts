@@ -1,4 +1,3 @@
-// ships.controller.ts
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { ShipsService } from './ships.service';
 import { Ship } from './ships.entity';
@@ -8,27 +7,16 @@ import { CreateShipDto } from './create-ship.dto';
 export class ShipsController {
   constructor(private shipsService: ShipsService) {}
 
-  // @Post()
-  // async createShip(@Body() createShipDto: CreateShipDto): Promise<Ship> {
-  //   console.log('Controller received:', createShipDto);
-  //   return this.shipsService.addShip(createShipDto);
-  // }
-
-  // @Get()
-  // async getAllShips(): Promise<Ship[]> {
-  //   return this.shipsService.getAllShips();
-  // }
-
   @Get()
   findAll() {
     return this.shipsService.findAll();
   }
 
   @Post()
-  create(@Body() createShipDto: CreateShipDto) {
-    return this.shipsService.create(createShipDto);
-  }
-
+create(@Body() createShipDto: CreateShipDto) {
+  console.log("Received createShipDto:", createShipDto); // Debugging log
+  return this.shipsService.addShip(createShipDto);
+}
   @Get(':id')
   async getShipById(@Param('id') id: number): Promise<Ship> {
     return this.shipsService.findShipById(id);
@@ -46,10 +34,4 @@ export class ShipsController {
   async deleteShip(@Param('id') id: number): Promise<void> {
     return this.shipsService.deleteShip(id);
   }
-
-  // @Post('/add-test-ship')
-  // async addTestShip(): Promise<Ship> {
-  //   // Hardcoded ship data for testing
-  //   return this.shipsService.createShip('Black Pearl', 'Pirate Ship', ['Jack Sparrow', 'Will Turner', 'Elizabeth Swann']);
-  // }
 }

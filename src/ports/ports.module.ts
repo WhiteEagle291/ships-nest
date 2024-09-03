@@ -11,5 +11,6 @@ import { Port } from './port.entity'; // Import your Port entity
   ],
   providers: [PortsService],
   controllers: [PortsController],
+  exports: [PortsService, TypeOrmModule],
 })
 export class PortsModule {}

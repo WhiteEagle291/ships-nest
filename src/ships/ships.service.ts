@@ -1,7 +1,8 @@
-import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Ship } from './ships.entity';
+import { Port } from '../ports/port.entity'; // Import the Port entity
 import { CreateShipDto } from './create-ship.dto';
 
 @Injectable()
@@ -9,32 +10,38 @@ export class ShipsService {
   constructor(
     @InjectRepository(Ship)
     private shipRepository: Repository<Ship>,
+
+    @InjectRepository(Port) // Inject the Port repository
+    private portRepository: Repository<Port>,
   ) {}
-  // Service methods here
 
   findAll() {
     return this.shipRepository.find({ relations: ['port'] });
   }
 
   async addShip(createShipDto: CreateShipDto): Promise<Ship> {
-    console.log('Received DTO:', createShipDto);
+    const { name, type, crew, portId } = createShipDto; // Destructure portId
   
-    const { name, type, crew } = createShipDto;
-    console.log('Parsed Values:', { name, type, crew });
+    console.log(`Received portId: ${portId}`); // Debugging log
   
+    // Find the port by ID
+    const port = await this.portRepository.findOne({ where: { id: portId } });
+  
+    if (!port) {
+      throw new Error('Port not found');
+    }
+  
+    // Create and save the ship with the port reference
     const ship = this.shipRepository.create({
       name,
       type,
-      crew: Array.isArray(crew) ? crew : [crew] // Ensure this is an array
+      crew: Array.isArray(crew) ? crew : [crew],
+      port,
     });
   
-    console.log('Constructed Ship:', ship);
-    const savedShip = await this.shipRepository.save(ship);
-    console.log('Saved Ship:', savedShip);
-  
-    return savedShip;
+    return this.shipRepository.save(ship);
   }
-  
+
   
   create(createShipDto: CreateShipDto) {
     const ship = this.shipRepository.create(createShipDto);

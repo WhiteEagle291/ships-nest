@@ -1,5 +1,5 @@
 // src/ships/ship.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { Port } from '../ports/port.entity';
 import { User } from '../users/user.entity';
 
@@ -17,9 +17,9 @@ export class Ship {
   @Column("text", { array: true, default: () => 'ARRAY[]::text[]' })
   crew: string[];
 
-  @ManyToOne(() => Port, (port) => port.ships)
-  port: Port;
-
+  @ManyToOne(() => Port, (port) => port.ships, { nullable: false })
+@JoinColumn({ name: 'portId' })
+port: Port;
   @OneToMany(() => User, (user) => user.ship)
   users: User[];
 }
