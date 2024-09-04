@@ -6,6 +6,7 @@ import { UsersController } from './users.controller';
 import { User } from './user.entity'; // Import your User entity
 import { Ship } from 'src/ships/ships.entity';
 
+
 @Module({
   imports: [
     TypeOrmModule.forFeature([User,Ship]), // Register the User entity here

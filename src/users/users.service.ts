@@ -18,6 +18,12 @@ export class UsersService {
   findAll(): Promise<User[]> {
     return this.usersRepository.find({ relations: ['ship'] });
   }
+
+
+  async findUserById(id: number): Promise<User> { // Add this method
+    return await this.usersRepository.findOne({ where: { id } });
+  }
+
   
 
   // Method to find a user by ID

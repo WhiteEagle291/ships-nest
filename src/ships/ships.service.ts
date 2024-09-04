@@ -4,6 +4,9 @@ import { Repository } from 'typeorm';
 import { Ship } from './ships.entity';
 import { Port } from '../ports/port.entity'; // Import the Port entity
 import { CreateShipDto } from './create-ship.dto';
+import { User } from 'src/users/user.entity';
+import { CreateUserDto } from 'src/users/create-user-dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ShipsService {
@@ -13,6 +16,8 @@ export class ShipsService {
 
     @InjectRepository(Port) // Inject the Port repository
     private portRepository: Repository<Port>,
+
+    private readonly usersService: UsersService, // Inject UsersService instead of UserRepository
   ) {}
 
   findAll() {
@@ -42,7 +47,17 @@ export class ShipsService {
     return this.shipRepository.save(ship);
   }
 
-  
+  async addUserToCrew(shipId: number, userId: number): Promise<void> {
+    const ship = await this.shipRepository.findOne({ where: { id: shipId } });
+    const user = await this.usersService.findUserById(userId);
+
+    if (ship && user) {
+      if (!ship.crew.includes(user.username)) {
+        ship.crew.push(user.username);
+        await this.shipRepository.save(ship);
+      }
+    }
+  }
   create(createShipDto: CreateShipDto) {
     const ship = this.shipRepository.create(createShipDto);
     return this.shipRepository.save(ship);
@@ -56,9 +71,13 @@ export class ShipsService {
     return this.shipRepository.findOne({ where: { id } });
   }
 
-  async updateShip(id: number, updateData: Partial<Ship>): Promise<Ship> {
-    await this.shipRepository.update(id, updateData);
-    return this.findShipById(id);
+  async findOne(id: number): Promise<Ship> {
+    return await this.shipRepository.findOneBy({ id });
+  }
+
+  async updateShip(id: number, updatedShip: Ship): Promise<Ship> {
+    await this.shipRepository.update(id, updatedShip);
+    return this.findOne(id);
   }
 
   async deleteShip(id: number): Promise<void> {
