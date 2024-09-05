@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Ship } from './ships.entity';
@@ -75,10 +75,34 @@ export class ShipsService {
     return await this.shipRepository.findOneBy({ id });
   }
 
-  async updateShip(id: number, updatedShip: Ship): Promise<Ship> {
-    await this.shipRepository.update(id, updatedShip);
-    return this.findOne(id);
+  async updateShip(id: number, updateShipDto: Partial<CreateShipDto>): Promise<Ship> {
+    const ship = await this.shipRepository.findOne({ where: { id } });
+    if (!ship) {
+      throw new NotFoundException(`Ship with ID ${id} not found`);
+    }
+  
+    // Update the ship's properties
+    if (updateShipDto.name) {
+      ship.name = updateShipDto.name;
+    }
+    if (updateShipDto.type) {
+      ship.type = updateShipDto.type;
+    }
+    if (updateShipDto.crew) {
+      ship.crew = Array.isArray(updateShipDto.crew) ? updateShipDto.crew : [updateShipDto.crew];
+    }
+    if (updateShipDto.portId) {
+      const port = await this.portRepository.findOne({ where: { id: updateShipDto.portId } });
+      if (port) {
+        ship.port = port;
+      }
+    }
+  
+    // Save the updated ship back to the database
+    await this.shipRepository.save(ship);
+    return ship;
   }
+
 
   async deleteShip(id: number): Promise<void> {
     await this.shipRepository.delete(id);

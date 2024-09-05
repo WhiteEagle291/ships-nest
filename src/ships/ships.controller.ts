@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } fr
 import { ShipsService } from './ships.service';
 import { Ship } from './ships.entity';
 import { CreateShipDto } from './create-ship.dto';
+import { UpdateShipDto } from './update-ship.dto';
 
 @Controller('ships')
 export class ShipsController {
@@ -40,13 +41,13 @@ async addUserToCrew(
     return this.shipsService.findShipById(id);
   }
 
-  // @Put(':id')
-  // async updateShip(
-  //   @Param('id') id: number,
-  //   @Body() updateData: Partial<Ship>,
-  // ): Promise<Ship> {
-  //   return this.shipsService.updateShip(id, updateData);
-  // }
+  @Put(':id')
+  async updateShip(
+    @Param('id') id: number, 
+    @Body() updateShipDto: UpdateShipDto
+  ): Promise<Ship> {
+    return this.shipsService.updateShip(id, updateShipDto);
+  }
 
   @Delete(':id')
   async deleteShip(@Param('id') id: number): Promise<void> {
