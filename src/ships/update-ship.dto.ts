@@ -1,4 +1,4 @@
-// src/ships/update-ship.dto.ts
+
 import { IsOptional, IsString, IsArray, IsNumber } from 'class-validator';
 
 export class UpdateShipDto {
@@ -16,5 +16,5 @@ export class UpdateShipDto {
 
   @IsOptional()
   @IsNumber()
-  portId?: number; // Optional since not every update will involve changing the port
+  portId?: number; 
 }

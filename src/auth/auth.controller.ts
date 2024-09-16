@@ -1,7 +1,7 @@
-// src/auth/auth.controller.ts
+
 import { Controller, Post, Body, UseGuards, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './jwt-auth.guard'; // Ensure you have this guard
+import { JwtAuthGuard } from './jwt-auth.guard'; 
 import { UsersService } from 'src/users/users.service';
 import { CreateUserDto } from 'src/users/create-user-dto';
 import { LoginDto } from './login.dto';
@@ -18,7 +18,7 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     const { token, user } = await this.authService.login(loginDto);
     
-    // Get all ships and ports to send in the response
+    //fetchovanje brodova i slanje u response
     const ships = await this.shipService.getAllShips();
 
     return {
@@ -31,7 +31,7 @@ export class AuthController {
   
 
   @Get('test')
-  @UseGuards(JwtAuthGuard) // Apply the guard here
+  @UseGuards(JwtAuthGuard) // test funkcija
   getTest() {
     return { message: 'Test endpoint works!' };
   }

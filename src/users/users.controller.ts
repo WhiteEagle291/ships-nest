@@ -1,4 +1,4 @@
-// src/users/users.controller.ts
+
 import { Controller, Get, Post, Body, Param, Delete, Put, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
@@ -28,10 +28,10 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    // Log or process the received data
+    
     console.log('Received data:', createUserDto);
     
-    // Call service method to create user
+    
     return this.usersService.create(createUserDto);
   }
 
@@ -40,10 +40,10 @@ export class UsersController {
     return this.usersService.update(id, userData);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.usersService.remove(id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: number): Promise<void> {
+  //   return this.usersService.remove(id);
+  // }
 
   
 }

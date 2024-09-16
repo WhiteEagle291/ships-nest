@@ -1,4 +1,4 @@
-// src/users/users.service.ts
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOneOptions, Repository } from 'typeorm';
@@ -20,18 +20,18 @@ export class UsersService {
   }
 
 
-  async findUserById(id: number): Promise<User> { // Add this method
+  async findUserById(id: number): Promise<User> { 
     return await this.usersRepository.findOne({ where: { id } });
   }
 
   
 
-  // Method to find a user by ID
+
   async findOne(id: number): Promise<User> {
     return this.usersRepository.findOne({ where: { id } });
   }
 
-    // Method to find a user by username
+   
     async findByUsername(username: string): Promise<User | undefined> {
       return this.usersRepository.findOne({ where: { username } });
     }
@@ -47,18 +47,17 @@ export class UsersService {
       return this.usersRepository.save(newUser);
     }
 
-   // Update method that correctly calls findOne after the update
+ 
    async update(id: number, updateData: Partial<User>): Promise<User> {
-    // Perform the update operation
+ 
     await this.usersRepository.update(id, updateData);
-
-    // Retrieve and return the updated user using the updated findOne method
+   
     return this.findOne(id);
   }
 
   
 
-  async remove(id: number): Promise<void> {
-    await this.usersRepository.delete(id);
-  }
+  // async remove(id: number): Promise<void> {
+  //   await this.usersRepository.delete(id);
+  // }
 }

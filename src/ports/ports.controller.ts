@@ -1,4 +1,4 @@
-// src/ports/ports.controller.ts
+
 import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { PortsService } from './ports.service';
 import { Port } from './port.entity';
@@ -23,13 +23,13 @@ export class PortsController {
     return this.portsService.create(createPortDto);
   }
 
-  @Put(':id')
-  update(@Param('id') id: number, @Body() portData: Partial<Port>): Promise<Port> {
-    return this.portsService.update(id, portData);
-  }
+  // @Put(':id')
+  // update(@Param('id') id: number, @Body() portData: Partial<Port>): Promise<Port> {
+  //   return this.portsService.update(id, portData);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: number): Promise<void> {
-    return this.portsService.remove(id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: number): Promise<void> {
+  //   return this.portsService.remove(id);
+  // }
 }

@@ -1,4 +1,4 @@
-// src/users/user.entity.ts
+
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Ship } from '../ships/ships.entity';
 
@@ -15,8 +15,8 @@ export class User {
 
   @ManyToOne(() => Ship, (ship) => ship.users, { nullable: true })
   @JoinColumn({ name: 'shipId' })
-  ship?: Ship;  // Optional property
+  ship?: Ship;  
 
   @Column({ nullable: true })
-  shipId?: number; // Optional, if you want to store the ship ID in the user
+  shipId?: number; 
 }

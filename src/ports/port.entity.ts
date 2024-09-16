@@ -1,4 +1,4 @@
-// src/ports/port.entity.ts
+
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Ship } from '../ships/ships.entity';
 

@@ -1,4 +1,4 @@
-// src/ships/ship.entity.ts
+
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 import { Port } from '../ports/port.entity';
 import { User } from '../users/user.entity';

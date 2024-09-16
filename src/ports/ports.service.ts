@@ -25,12 +25,12 @@ export class PortsService {
     return this.portsRepository.save(port);
   }
 
-  async update(id: number, updateData: Partial<Port>): Promise<Port> {
-    await this.portsRepository.update(id, updateData);
-    return this.findOne(id);
-  }
+  // async update(id: number, updateData: Partial<Port>): Promise<Port> {
+  //   await this.portsRepository.update(id, updateData);
+  //   return this.findOne(id);
+  // }
 
-  async remove(id: number): Promise<void> {
-    await this.portsRepository.delete(id);
-  }
+  // async remove(id: number): Promise<void> {
+  //   await this.portsRepository.delete(id);
+  // }
 }

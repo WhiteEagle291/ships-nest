@@ -14,29 +14,37 @@ export class ShipsService {
     @InjectRepository(Ship)
     private shipRepository: Repository<Ship>,
 
-    @InjectRepository(Port) // Inject the Port repository
+    @InjectRepository(Port) 
     private portRepository: Repository<Port>,
 
-    private readonly usersService: UsersService, // Inject UsersService instead of UserRepository
+    private readonly usersService: UsersService, 
   ) {}
 
-  findAll() {
-    return this.shipRepository.find({ relations: ['port'] });
+   //findAll uzima id luke i filtrira brodove za taj id
+   findAll(portId?: number) {
+    const query = this.shipRepository.createQueryBuilder('ship')
+      .leftJoinAndSelect('ship.port', 'port');
+
+    if (portId) {
+      query.where('port.id = :portId', { portId });
+    }
+
+    return query.getMany(); 
   }
 
   async addShip(createShipDto: CreateShipDto): Promise<Ship> {
-    const { name, type, crew, portId } = createShipDto; // Destructure portId
+    const { name, type, crew, portId } = createShipDto; 
   
-    console.log(`Received portId: ${portId}`); // Debugging log
+    console.log(`Received portId: ${portId}`); 
   
-    // Find the port by ID
+   
     const port = await this.portRepository.findOne({ where: { id: portId } });
   
     if (!port) {
       throw new Error('Port not found');
     }
   
-    // Create and save the ship with the port reference
+
     const ship = this.shipRepository.create({
       name,
       type,
@@ -58,6 +66,9 @@ export class ShipsService {
       }
     }
   }
+
+
+
   create(createShipDto: CreateShipDto) {
     const ship = this.shipRepository.create(createShipDto);
     return this.shipRepository.save(ship);
@@ -81,7 +92,6 @@ export class ShipsService {
       throw new NotFoundException(`Ship with ID ${id} not found`);
     }
   
-    // Update the ship's properties
     if (updateShipDto.name) {
       ship.name = updateShipDto.name;
     }
@@ -98,7 +108,6 @@ export class ShipsService {
       }
     }
   
-    // Save the updated ship back to the database
     await this.shipRepository.save(ship);
     return ship;
   }

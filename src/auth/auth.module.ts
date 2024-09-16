@@ -10,7 +10,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ShipsModule } from 'src/ships/ships.module';
 
 const jwtSecret = process.env.JWT_SECRET;
-console.log('JWT_SECRET:', jwtSecret); // Check if this outputs the correct value
+console.log('JWT_SECRET:', jwtSecret); 
 
 
 @Module({

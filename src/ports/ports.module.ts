@@ -1,13 +1,13 @@
-// ports.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PortsService } from './ports.service';
 import { PortsController } from './ports.controller';
-import { Port } from './port.entity'; // Import your Port entity
+import { Port } from './port.entity'; 
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Port]), // Register the Port entity here
+    TypeOrmModule.forFeature([Port]), 
   ],
   providers: [PortsService],
   controllers: [PortsController],
